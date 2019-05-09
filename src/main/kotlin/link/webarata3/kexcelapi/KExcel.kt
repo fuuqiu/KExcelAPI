@@ -53,8 +53,8 @@ class KExcel {
 
         @JvmStatic
         fun cellIndexToCellLabel(x: Int, y: Int): String {
-            require(x >= 0, { "xは0以上でなければなりません" })
-            require(y >= 0, { "yは0以上でなければなりません" })
+            require(x >= 0, { "x必须大于或等于0" })
+            require(y >= 0, { "y必须大于或等于0" })
             val cellName = dec26(x, 0)
             return cellName + (y + 1)
         }
@@ -133,7 +133,7 @@ private fun Cell.setValue(value: Any) {
         is Double -> setCellValue(value)
         is Boolean -> setCellValue(value)
         is Date -> {
-            // 日付セルはフォーマットしてあげないと日付型にならない
+            // 除非格式化，否则日期单元格不能日期
             setCellValue(value)
             val wb = sheet.workbook
             val createHelper = wb.creationHelper

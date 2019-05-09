@@ -69,8 +69,8 @@ class CellProxy(private val cell: Cell) {
     }
 
     private fun normalizeNumericString(numeric: Double): String {
-        // 44.0のような数値を44として取得するために、入力された数値と小数点以下を切り捨てた数値が
-        // 一致した場合には、intにキャストして、小数点以下が表示されないようにしている
+        // 为了获得诸如44.0之类的数值为44，输入数值和小数点后四舍五入的数值为
+        // 如果匹配，则转换为int，以便不显示小数部分
         return if (numeric == Math.ceil(numeric)) {
             numeric.toInt().toString()
         } else numeric.toString()
@@ -80,7 +80,7 @@ class CellProxy(private val cell: Cell) {
         try {
             return java.lang.Double.parseDouble(value).toInt()
         } catch (e: NumberFormatException) {
-            throw IllegalAccessException("cellはintに変換できません")
+            throw IllegalAccessException("cell无法转换为Int")
         }
     }
 
@@ -88,7 +88,7 @@ class CellProxy(private val cell: Cell) {
         try {
             return java.lang.Double.parseDouble(value)
         } catch (e: NumberFormatException) {
-            throw IllegalAccessException("cellはdoubleに変換できません")
+            throw IllegalAccessException("cell无法转换为Double")
         }
     }
 
@@ -103,14 +103,14 @@ class CellProxy(private val cell: Cell) {
         when (getCellTypeEnum()) {
             CellType.STRING -> return getStringCellValue()
             CellType.NUMERIC -> return if (isDateType()) {
-                throw UnsupportedOperationException("今はサポート外")
+                throw UnsupportedOperationException("现在不支持")
             } else {
                 normalizeNumericString(getNumericCellValue())
             }
             CellType.BOOLEAN -> return getBooleanCellValue().toString()
             CellType.BLANK -> return ""
             else // _NONE, ERROR
-            -> throw IllegalAccessException("cellはStringに変換できません")
+            -> throw IllegalAccessException("cell无法转换为String")
         }
     }
 
@@ -118,11 +118,11 @@ class CellProxy(private val cell: Cell) {
         when (getCellTypeEnum()) {
             CellType.STRING -> return stringToInt(getStringCellValue())
             CellType.NUMERIC -> return if (isDateType()) {
-                throw IllegalAccessException("cellはIntに変換できません")
+                throw IllegalAccessException("cell无法转换为Int")
             } else {
                 getNumericCellValue().toInt()
             }
-            else -> throw IllegalAccessException("cellはIntに変換できません")
+            else -> throw IllegalAccessException("cell无法转换为Int")
         }
     }
 
@@ -130,25 +130,25 @@ class CellProxy(private val cell: Cell) {
         when (getCellTypeEnum()) {
             CellType.STRING -> return stringToDouble(getStringCellValue())
             CellType.NUMERIC -> return if (isDateType()) {
-                throw IllegalAccessException("cellはDoubleに変換できません")
+                throw IllegalAccessException("cell无法转换为Double")
             } else {
                 getNumericCellValue()
             }
-            else -> throw IllegalAccessException("cellはDoubleに変換できません")
+            else -> throw IllegalAccessException("cell无法转换为Double")
         }
     }
 
     fun toBoolean(): Boolean {
         when (getCellTypeEnum()) {
             CellType.BOOLEAN -> return getBooleanCellValue()
-            else -> throw IllegalAccessException("cellはBooleanに変換できません")
+            else -> throw IllegalAccessException("cell无法转换为布尔值")
         }
     }
 
     fun toDate(): Date {
         when {
             isDateType() -> return cell.dateCellValue
-            else -> throw IllegalAccessException("cellはDateに変換できません")
+            else -> throw IllegalAccessException("cell无法转换为日期")
         }
     }
 }
