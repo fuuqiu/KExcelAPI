@@ -26,6 +26,7 @@ package link.webarata3.kexcelapi
 import org.apache.poi.ss.usermodel.*
 import java.io.FileInputStream
 import java.io.IOException
+import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -34,9 +35,22 @@ import java.util.regex.Pattern
 
 class KExcel {
     companion object {
+
+        /**
+         * 以文件的方式读取
+         */
         @JvmStatic
         fun open(fileName: String): Workbook {
             return WorkbookFactory.create(FileInputStream(Paths.get(fileName).toFile()))
+        }
+
+
+        /**
+         * 以流的方式读取
+         */
+        @JvmStatic
+        fun read(inputStream: InputStream): Workbook {
+            return WorkbookFactory.create(inputStream)
         }
 
         @JvmStatic
